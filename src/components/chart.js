@@ -12,6 +12,7 @@ const Chart = ({data, head, frame, interval}) => {
     const timezone = data["Meta Data"]["6. Time Zone"];
     const allPoints = data[`Time Series (${interval})`];
 
+    // Filter data based on visualization options
     if (frame === "day") {
         allPoints && Object.keys(allPoints).forEach(key => {
             const timestamp = moment.tz(key, timezone);
@@ -34,6 +35,7 @@ const Chart = ({data, head, frame, interval}) => {
         });
     }
 
+    // If there is no data, show an error message
     if (visualizedPoints.length === 0) {
         return <Typography component="h6" variant="h6" align="center" color="textSecondary" gutterBottom>
             No data available for this period. Please try to increase data interval.

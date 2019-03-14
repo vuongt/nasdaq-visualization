@@ -9,8 +9,6 @@ import isWithinInterval from "date-fns/isWithinInterval";
 import {DatePicker} from "material-ui-pickers";
 import {IconButton, withStyles} from "@material-ui/core";
 
-// this guy required only on the docs site to work with dynamic date library
-
 class WeekPicker extends PureComponent {
     /**
      * A custom component to pick a week.

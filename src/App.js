@@ -33,13 +33,18 @@ const styles = theme => ({
 });
 
 class App extends Component {
+    /**
+     * Main component of the app that contains the visualization options and the 2D chart.
+     * Each time user change one of the visualization options (frame, interval, head),
+     * the chart gets the updated information through this main component.
+     */
     constructor(props) {
         super(props);
 
         this.state = {
-            frame: "day",
-            interval: "5min",
-            head: null,
+            frame: "day",  // string: show data for 1 day, 1 week or 1 month
+            interval: "5min",  // string: show 5-minute or 1-day interval data set
+            head: null,  // moment date: the head of the time pointer
         };
     }
 
@@ -106,6 +111,7 @@ class App extends Component {
                                 <InputLabel shrink htmlFor="time">
                                     Date
                                 </InputLabel>
+                                {/* render day or month or week picker, depending on 'frame' option */}
                                 {frame === "day" &&
                                 <DatePicker
                                     margin="normal"
@@ -128,19 +134,27 @@ class App extends Component {
 
                         </Grid>
                     </MuiPickersUtilsProvider>
+
+                    {/* Show chart when loading is done */}
                     {!loading && data &&
                     <Chart data={data} head={head || lastRefreshed} frame={frame} interval={interval}/>}
+
+                    {/* Show spinner while loading data */}
                     {loading && <Grid container justify="space-around" direction="column" alignItems="center">
                         <div><CircularProgress className={classes.progress}/></div>
                         <Typography component="h5" variant="h5" align="center" color="textSecondary" gutterBottom>
                             Loading data...
                         </Typography>
                     </Grid>}
+
+                    {/*Show error message when failing to load data*/}
                     {error && <Grid container justify="space-around" direction="column" alignItems="center">
                         <Typography component="h5" variant="h5" align="center" color="textSecondary" gutterBottom>
                             Error loading data, please try to reload the page.
                         </Typography>
                     </Grid>}
+
+                    {/* if interval = 5 min, show information about data timezone and last updated time*/}
                     {interval === "5min" &&
                     <div>
                         <Typography component="subtitle1" variant="subtitle1" align="right" color="textSecondary" gutterBottom>

@@ -9,7 +9,7 @@ function getNasdaqData(dataType) {
     /**
      * Redux action to get NASDAQ data
      * @param dataType: either "TIME_SERIES_DAILY" to get daily time series
-     * or "TIME_SERIES_INTRADAY" to get data every 5 minutes
+     * or "TIME_SERIES_INTRADAY" to get intraday data (5-min interval)
      */
     return dispatch => {
         dispatch(request());
