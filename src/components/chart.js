@@ -4,9 +4,10 @@ import React from "react";
 import CanvasJSReact from "../assets/canvasjs.react";
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-const Chart = ({data, head, frame, interval}) => {
+const Chart = ({data, head, frame, interval, local}) => {
     /**
-     * Chart component that renders data based on user's choice of frame, data interval and specific date (head)
+     * Chart component that renders data based on user's choice of frame, data interval, specific date (head)
+     * and whether to convert time data label to local time
      */
     let visualizedPoints = [];
     const timezone = data["Meta Data"]["6. Time Zone"];
@@ -18,7 +19,7 @@ const Chart = ({data, head, frame, interval}) => {
             const timestamp = moment.tz(key, timezone);
             if (timestamp.isSame(head, 'day')) {
                 visualizedPoints.unshift({
-                    label: timestamp.format("HH:mm"),
+                    label: local ? timestamp.local().format("DD-MM HH:mm") : timestamp.format("DD-MM HH:mm"),
                     y: parseFloat(allPoints[key]["1. open"])
                 })
             }
@@ -28,7 +29,7 @@ const Chart = ({data, head, frame, interval}) => {
             const timestamp = moment.tz(key, timezone);
             if (timestamp.isSame(head, frame)) {
                 visualizedPoints.unshift({
-                    label: timestamp.format("DD-MM"),
+                    label: local && interval === "5min" ? timestamp.local().format("DD-MM HH:mm") : timestamp.format("DD-MM HH:mm"),
                     y: parseFloat(allPoints[key]["1. open"])
                 })
             }

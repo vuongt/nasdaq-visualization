@@ -15,6 +15,8 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Chart from './components/chart'
 
 const styles = theme => ({
@@ -45,6 +47,7 @@ class App extends Component {
             frame: "day",  // string: show data for 1 day, 1 week or 1 month
             interval: "5min",  // string: show 5-minute or 1-day interval data set
             head: null,  // moment date: the head of the time pointer
+            convertToLocalTime: false
         };
     }
 
@@ -65,9 +68,13 @@ class App extends Component {
         this.setState({head: moment(date)});
     };
 
+    handleChangeSwitch = event => {
+        this.setState({convertToLocalTime: event.target.checked});
+    };
+
     render() {
         const {classes, daily, intraday, loading, error} = this.props;
-        const {frame, head, interval} = this.state;
+        const {frame, head, interval, convertToLocalTime} = this.state;
         let data = intraday;
         if (interval === "Daily") {
             data = daily
@@ -93,6 +100,19 @@ class App extends Component {
                                     <MenuItem value="5min">5 minutes</MenuItem>
                                     <MenuItem value="Daily">Daily</MenuItem>
                                 </Select>
+                                {/* if interval = 5 min, option to show time label in local time*/}
+                                {interval === "5min" &&
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={convertToLocalTime}
+                                            onChange={this.handleChangeSwitch}
+                                            value="convertToLocalTime"
+                                            color="primary"
+                                        />
+                                    }
+                                    label="Show time label in local time"
+                                />}
                             </FormControl>
                             <FormControl className={classes.formControl}>
                                 <InputLabel shrink htmlFor="frame">
@@ -137,7 +157,7 @@ class App extends Component {
 
                     {/* Show chart when loading is done */}
                     {!loading && data &&
-                    <Chart data={data} head={head || lastRefreshed} frame={frame} interval={interval}/>}
+                    <Chart data={data} head={head || lastRefreshed} frame={frame} interval={interval} local={convertToLocalTime}/>}
 
                     {/* Show spinner while loading data */}
                     {loading && <Grid container justify="space-around" direction="column" alignItems="center">
@@ -157,10 +177,12 @@ class App extends Component {
                     {/* if interval = 5 min, show information about data timezone and last updated time*/}
                     {interval === "5min" &&
                     <div>
-                        <Typography component="subtitle1" variant="subtitle1" align="right" color="textSecondary" gutterBottom>
-                            Time zone: {timezone}
+                        <Typography component="subtitle1" variant="subtitle1" align="right" color="textSecondary"
+                                    gutterBottom>
+                            Time zone: {convertToLocalTime ? <span>Local</span>: timezone}
                         </Typography>
-                        <Typography component="subtitle1" variant="subtitle1" align="right" color="textSecondary" gutterBottom>
+                        <Typography component="subtitle1" variant="subtitle1" align="right" color="textSecondary"
+                                    gutterBottom>
                             Last updated: {lastRefreshed && lastRefreshed.startOf('day').fromNow()}
                         </Typography>
                     </div>}
