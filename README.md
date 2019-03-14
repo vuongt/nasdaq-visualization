@@ -44,4 +44,4 @@ Refer to the comments in each file for more details.
 ### Note
 Loading NASDAQ data takes pretty long, so I choose to load the 2 data set only once when we first render the main App component. The chart then just needs to point to one or another data set in the store according to view options. This prevents waiting time when switching from one interval to another. The intraday data set loads faster, so it is shown first by default to improve user experience.
 
-All data pulled from alphadvantage have the string timestamps in US/Eastern therefore time zone information is shown when user choose the 5-minute interval
+All data pulled from alphadvantage have the string timestamp in US/Eastern time zone therefore time zone information is shown when user chooses the 5-minute interval. User can choose to show data in their local time zone.
