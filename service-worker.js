@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/nasdaq-visualization/precache-manifest.6d8983a5012be165bb0660b8753db39c.js"
+  "/nasdaq-visualization/precache-manifest.e77b9e2aca86e05994549b138491a711.js"
 );
 
 workbox.clientsClaim();
